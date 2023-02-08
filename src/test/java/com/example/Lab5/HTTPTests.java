@@ -22,6 +22,10 @@ public class HTTPTests {
     @Autowired
     private AddressBookRepository addressBookRepository;
 
+    AddressBook a = new AddressBook();
+    BuddyInfo b1 = new BuddyInfo("Matt", "Carleton", "7777");
+    BuddyInfo b2 = new BuddyInfo("Robell", "SouthKeys", "8888");
+
     @Test
     public void createAddressBookTest(){
         ResponseEntity<AddressBook> response = restTemplate.getForEntity("/createAddressBook?id=1", AddressBook.class);
@@ -33,7 +37,6 @@ public class HTTPTests {
 
     @Test
     public void getAddressBookTest(){
-        AddressBook a = new AddressBook();
         a.setID(1);
         addressBookRepository.save(a);
 
@@ -47,7 +50,6 @@ public class HTTPTests {
 
     @Test
     public void addBuddyTest(){
-        AddressBook a = new AddressBook();
         a.setID(1);
         addressBookRepository.save(a);
 
@@ -64,19 +66,22 @@ public class HTTPTests {
 
     @Test
     public void removeBuddyTest(){
-        AddressBook a = new AddressBook();
         a.setID(1);
+        b1.setID(1);
+        b2.setID(2);
+        a.addBuddy(b1);
+        a.addBuddy(b2);
         addressBookRepository.save(a);
 
-        ResponseEntity<AddressBook> response = restTemplate.getForEntity("/addBuddy?addressId=1&buddyId=1&name=Matt&phoneNum=7777", AddressBook.class);
+        ResponseEntity<AddressBook> response = restTemplate.getForEntity("/removeBuddy?addressId=1&buddyId=1", AddressBook.class);
         AddressBook addressBook = response.getBody();
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(addressBook);
         assertEquals(1, addressBook.getID());
-        assertEquals(1, addressBook.getBuddyInfo(0).getID());
-        assertEquals("Matt", addressBook.getBuddyInfo(0).getName());
-        assertEquals("7777", addressBook.getBuddyInfo(0).getPhoneNumber());
+        assertEquals(2, addressBook.getBuddyInfo(0).getID());
+        assertEquals("Robell", addressBook.getBuddyInfo(0).getName());
+        assertEquals("8888", addressBook.getBuddyInfo(0).getPhoneNumber());
     }
 
 
