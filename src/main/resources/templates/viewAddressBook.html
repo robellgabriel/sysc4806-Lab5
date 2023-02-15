@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>AddressBookView</title>
+</head>
+<body>
+    <table>
+        <tr th:each="addressBook: ${listAB}">
+            <td th:text="'Addressbook ID: ' +${addressBook.getID()}"></td>
+        </tr>
+    </table>
+    <a href="/addAddressBook">Add AddressBook</a>
+    <a href="/addBuddyInfoView">Add BuddyInfo</a>
+</body>
+</html>
