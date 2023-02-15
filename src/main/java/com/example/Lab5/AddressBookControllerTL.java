@@ -36,6 +36,13 @@ public class AddressBookControllerTL {
         return "addBuddy";
     }
 
+    @GetMapping("/getBuddyInfoView")
+    public String getBuddyInfoView(@RequestParam("id") int id, Model model){
+        AddressBook addressBook = addressBookRepository.findByID(id);
+        model.addAttribute("addressBook", addressBook);
+        return "viewBuddyInfo";
+    }
+
     @PostMapping("/viewBuddyInfo")
     public String addBuddyInfoView(@RequestParam("addressId") int addressId,
                                @RequestParam("buddyId") int buddyId,
